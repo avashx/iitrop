@@ -70,11 +70,15 @@ export default function Layout({ children }) {
            {/* Theme Toggle Button */}
            <button 
              onClick={toggleTheme}
-             className={`w-full flex items-center gap-3 p-2 rounded-full transition-all duration-300 hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-main)]`}
+             className={`w-full flex items-center gap-3 p-2 rounded-full transition-all duration-300 hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-main)] group`}
            >
-             <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
-                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-             </div>
+             <motion.div 
+               className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+               animate={{ rotate: [0, 10, -10, 0] }}
+               transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+             >
+                {theme === 'dark' ? <Sun size={20} className="group-hover:text-yellow-400 transition-colors" /> : <Moon size={20} className="group-hover:text-blue-400 transition-colors" />}
+             </motion.div>
              <div className={`overflow-hidden transition-all duration-300 ${sidebarHover ? 'w-auto opacity-100 ml-2' : 'w-0 opacity-0'}`}>
                <p className="text-sm font-medium truncate">
                  {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -104,9 +108,32 @@ export default function Layout({ children }) {
             <span className="text-[#b42a25] font-bold text-lg">NEXUS</span>
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={toggleTheme} className="text-[var(--text-secondary)]">
-               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+            <motion.button 
+              onClick={toggleTheme} 
+              className="text-[var(--text-secondary)] p-2 rounded-full relative"
+              whileTap={{ scale: 0.9 }}
+            >
+               <motion.div
+                 animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, 15, -15, 0]
+                 }}
+                 transition={{ 
+                    duration: 2, 
+                    repeat: Infinity, 
+                    repeatDelay: 4 
+                 }}
+               >
+                 {theme === 'dark' ? <Sun size={20} className="text-yellow-400" /> : <Moon size={20} className="text-blue-500" />}
+               </motion.div>
+               {/* Pulse Ring for extra attention */}
+               <motion.span
+                 className="absolute inset-0 rounded-full border border-orange-400/50"
+                 initial={{ opacity: 0, scale: 1 }}
+                 animate={{ opacity: [0, 1, 0], scale: [1, 1.5, 1.8] }}
+                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
+               />
+            </motion.button>
             <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 text-black">
                <span className="text-xs font-bold">{user?.full_name?.[0]}</span>
             </div>
