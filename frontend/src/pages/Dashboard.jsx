@@ -49,10 +49,14 @@ export default function Dashboard() {
   return (
     <div>
       {/* Hero */}
-      <div className="card bg-gradient-to-br from-[#001E2B] to-[#0d3345] text-white mb-8 border-none shadow-xl relative overflow-hidden">
+      <div className="rounded-2xl p-6 bg-gradient-to-br from-[#001E2B] to-[#0d3345] text-white mb-8 shadow-xl relative overflow-hidden">
+        {/* Glow effect */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500 rounded-full mix-blend-overlay filter blur-[64px] opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+        
         <div className="relative z-10">
-          <h2 className="text-3xl font-bold tracking-tight mb-2">{greeting()}, {user?.full_name?.split(' ')[0]}!</h2>
+          <h2 className="text-3xl font-bold tracking-tight mb-2">
+            {greeting()}, <span className="text-primary-400">{user?.full_name?.split(' ')[0]}</span>!
+          </h2>
           <p className="text-gray-300 max-w-lg">
             Welcome to your campus command center. Check your latest updates and manage your day efficiently.
           </p>
@@ -60,7 +64,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats row */}
-      <h3 className="section-title text-[18px] font-semibold text-[#001E2B] mb-4">Overview</h3>
+      <h3 className="text-[18px] font-semibold text-[#001E2B] mb-4">Overview</h3>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
         {[
           { label: 'Unread Mails', value: stats.mails, icon: 'fa-envelope', color: 'text-blue-500' },
