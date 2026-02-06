@@ -4,6 +4,7 @@ import { useTheme } from '../../context/ThemeContext'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Sun, Moon } from 'lucide-react'
+import ParticleBackground from '../common/ParticleBackground'
 
 // FontAwesome icons map
 const links = [
@@ -24,7 +25,8 @@ export default function Layout({ children }) {
   const [sidebarHover, setSidebarHover] = useState(false)
 
   return (
-    <div className="min-h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-300">
+    <div className="min-h-screen flex bg-transparent text-[var(--text-main)] transition-colors duration-300 relative">
+      <ParticleBackground />
       
       {/* ─── DESKTOP SIDEBAR ─── */}
       <aside
