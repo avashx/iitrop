@@ -1,4 +1,4 @@
-# NEXUS
+NEXUS
 
 running link : https://iitrop.vercel.app/
 

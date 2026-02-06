@@ -1,6 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useTheme } from '../../context/ThemeContext'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Sun, Moon } from 'lucide-react'
 
 // FontAwesome icons map
 const links = [
@@ -17,30 +20,22 @@ const links = [
 
 export default function Layout({ children }) {
   const { user } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const [sidebarHover, setSidebarHover] = useState(false)
 
-  // Desktop Link Styles
-  const linkClass = ({ isActive }) =>
-    `flex items-center gap-4 px-4 h-12 mb-2 rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden ${
-      isActive
-        ? 'bg-white text-[#001E2B] shadow-sm'
-        : 'text-gray-500 hover:bg-white/50 hover:text-[#001E2B] hover:translate-x-1'
-    }`
-
   return (
-    <div className="min-h-screen flex bg-[#F9FBFA] text-[#001E2B]">
+    <div className="min-h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-300">
       
       {/* ─── DESKTOP SIDEBAR ─── */}
       <aside
         className="hidden md:flex flex-col fixed inset-y-0 left-0 z-50 h-[calc(100vh-32px)] m-4 rounded-[40px] glass-sidebar transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
-        style={{ width: sidebarHover ? '260px' : '80px' }}
+        style={{ width: sidebarHover ? '260px' : '80px', backgroundColor: 'var(--bg-surface)' }}
         onMouseEnter={() => setSidebarHover(true)}
         onMouseLeave={() => setSidebarHover(false)}
       >
         {/* Logo Area */}
         <div className="flex items-center px-5 py-8 h-24 mb-4">
           <div className="w-8 h-8 rounded-full bg-transparent flex items-center justify-center shrink-0">
-             {/* Using an img or icon here if available, or just the N */}
              <span className="text-red-700 font-bold text-xl">N</span>
           </div>
           <div className={`ml-4 transition-opacity duration-300 ${sidebarHover ? 'opacity-100' : 'opacity-0'} whitespace-nowrap`}>
@@ -54,8 +49,8 @@ export default function Layout({ children }) {
             <NavLink key={l.to} to={l.to} className={({ isActive }) => 
               `flex items-center px-3 h-12 rounded-[50px] transition-all duration-200 whitespace-nowrap overflow-hidden ${
                 isActive 
-                  ? 'bg-white text-[#001E2B] shadow-[0_4px_12px_rgba(0,0,0,0.08)]' 
-                  : 'text-[#3D4F58] hover:bg-black/5 hover:text-[#001E2B]'
+                  ? 'bg-[var(--bg-main)] text-[var(--text-main)] shadow-[0_4px_12px_rgba(0,0,0,0.08)]' 
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-main)]'
               }`
             }>
               <div className="w-6 mx-2 flex items-center justify-center shrink-0">
@@ -68,14 +63,29 @@ export default function Layout({ children }) {
           ))}
         </nav>
 
-        {/* User Footer */}
-        <div className="p-4 mt-auto">
-          <div className={`flex items-center gap-3 p-2 rounded-full transition-all duration-300 ${sidebarHover ? 'bg-white/40' : ''}`}>
+        {/* Footer: User + Theme */}
+        <div className="p-4 mt-auto space-y-2">
+           {/* Theme Toggle Button */}
+           <button 
+             onClick={toggleTheme}
+             className={`w-full flex items-center gap-3 p-2 rounded-full transition-all duration-300 hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-main)]`}
+           >
+             <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+             </div>
+             <div className={`overflow-hidden transition-all duration-300 ${sidebarHover ? 'w-auto opacity-100 ml-2' : 'w-0 opacity-0'}`}>
+               <p className="text-sm font-medium truncate">
+                 {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+               </p>
+             </div>
+           </button>
+
+          <div className={`flex items-center gap-3 p-2 rounded-full transition-all duration-300 ${sidebarHover ? 'bg-[var(--bg-hover)]' : ''}`}>
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center shrink-0 text-gray-700 font-bold shadow-sm">
               {user?.full_name?.[0] || 'U'}
             </div>
             <div className={`overflow-hidden transition-all duration-300 ${sidebarHover ? 'w-auto opacity-100 ml-2' : 'w-0 opacity-0'}`}>
-              <p className="text-sm font-bold truncate text-[#001E2B]">
+              <p className="text-sm font-bold truncate text-[var(--text-main)]">
                 {user?.full_name?.split(' ')[0]}
               </p>
             </div>
@@ -87,18 +97,34 @@ export default function Layout({ children }) {
       <div className="flex-1 flex flex-col min-w-0 md:ml-[112px] transition-all duration-400">
         
         {/* Mobile Header */}
-        <header className="md:hidden sticky top-0 z-40 h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-4">
+        <header className="md:hidden sticky top-0 z-40 h-16 bg-[var(--bg-surface)]/80 backdrop-blur-md border-b border-[var(--bg-hover)] flex items-center justify-between px-4 text-[var(--text-main)]">
           <div className="flex items-center gap-3">
             <span className="text-[#b42a25] font-bold text-lg">NEXUS</span>
           </div>
-          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-             <span className="text-xs font-bold text-gray-700">{user?.full_name?.[0]}</span>
+          <div className="flex items-center gap-4">
+            <button onClick={toggleTheme} className="text-[var(--text-secondary)]">
+               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 text-black">
+               <span className="text-xs font-bold">{user?.full_name?.[0]}</span>
+            </div>
           </div>
         </header>
 
         {/* Main Content Area */}
         <main className="flex-1 p-4 md:p-8 lg:p-10 pb-24 md:pb-10 overflow-x-hidden">
-          <div className="max-w-7xl mx-auto animate-fade-in">
+             <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5 }}
+             >
+                {children}
+             </motion.div>
+        </main>
+      </div>
+    </div>
+  )
+}          <div className="max-w-7xl mx-auto animate-fade-in">
             {children}
           </div>
         </main>
