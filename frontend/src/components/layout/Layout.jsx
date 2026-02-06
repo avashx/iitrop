@@ -124,21 +124,14 @@ export default function Layout({ children }) {
              </motion.div>
         </main>
       </div>
-    </div>
-  )
-}          <div className="max-w-7xl mx-auto animate-fade-in">
-            {children}
-          </div>
-        </main>
-      </div>
-
+      
       {/* ─── MOBILE BOTTOM NAV ─── */}
       <nav className="mobile-nav-glass md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-auto min-w-[280px] h-auto py-2 px-6 rounded-[32px] z-50 flex items-center justify-between gap-4">
         {links.slice(0, 5).map((l) => (
           <NavLink key={l.to} to={l.to} className="no-underline">
             {({ isActive }) => (
-              <div className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200 ${isActive ? 'text-[#001E2B]' : 'text-[#3D4F58]'}`}>
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isActive ? 'bg-[#001E2B] text-[#00ED64]' : 'bg-transparent'}`}>
+              <div className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200 ${isActive ? 'text-[var(--text-main)]' : 'text-[var(--text-secondary)]'}`}>
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${isActive ? 'bg-[var(--text-main)] text-[var(--bg-main)]' : 'bg-transparent'}`}>
                   <i className={`fas ${l.icon} text-sm`}></i>
                 </div>
                 <span className="text-[10px] font-medium">{l.label.split(' ')[0]}</span>
