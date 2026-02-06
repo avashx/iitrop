@@ -34,8 +34,11 @@ app.add_middleware(
 
 # static uploads folder
 upload_dir = os.getenv("UPLOAD_DIR", "uploads")
-os.makedirs(upload_dir, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=upload_dir), name="uploads")
+try:
+    os.makedirs(upload_dir, exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=upload_dir), name="uploads")
+except OSError:
+    pass  # read-only FS on serverless – skip static mount
 
 # ---- register routers ----
 app.include_router(auth.router)
