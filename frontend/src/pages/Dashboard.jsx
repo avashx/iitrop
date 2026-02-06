@@ -15,6 +15,7 @@ const quickLinks = [
 export default function Dashboard() {
   const { user } = useAuth()
   const [stats, setStats] = useState({ mails: 4, items: 12, trips: 5, assignments: 3 })
+  const [activeFilter, setActiveFilter] = useState('Sab Kuch')
   
   const container = {
     hidden: { opacity: 0 },
@@ -62,11 +63,12 @@ export default function Dashboard() {
 
       {/* Filter Toolbar Actions */}
       <motion.div variants={item} className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
-         {['Sab Kuch', 'Bakar (Mails)', 'Campus Dukan', 'Homework'].map((filter, i) => (
+         {['Sab Kuch', 'Bakar (Mails)', 'Campus Dukan', 'Homework'].map((filter) => (
            <button 
              key={filter}
+             onClick={() => setActiveFilter(filter)}
              className={`px-3 py-1.5 rounded-[20px] text-[12px] font-semibold border border-transparent transition-all hover:-translate-y-[1px] ${
-               i===0 
+               activeFilter === filter 
                ? 'bg-[var(--text-main)] text-[var(--bg-main)] shadow-md' 
                : 'bg-[var(--bg-surface)] text-[var(--text-secondary)] shadow-sm hover:shadow-md'
              }`}

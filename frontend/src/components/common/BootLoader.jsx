@@ -39,8 +39,8 @@ export default function BootLoader({ onComplete }) {
       transition={{ duration: 0.8, ease: "easeInOut" }}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black text-[#00ED64] font-mono"
     >
-      <div className="w-80 space-y-4">
-        <h1 className="text-2xl font-bold tracking-widest text-center h-8">
+      <div className="w-96 space-y-8">
+        <h1 className="text-2xl font-bold tracking-widest text-center min-h-[40px]">
           {text} {phase === 0 && <span className="animate-pulse">_</span>}
         </h1>
         
@@ -48,9 +48,9 @@ export default function BootLoader({ onComplete }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-4 mt-4"
           >
-            <div className="text-xs text-green-400/80 text-center">{subText}</div>
+            <div className="text-xs text-green-400/80 text-center tracking-widest">{subText}</div>
             <div className="h-1 w-full bg-green-900 rounded overflow-hidden">
                <motion.div 
                  className="h-full bg-[#00ED64] shadow-[0_0_10px_#00ED64]"
@@ -59,7 +59,7 @@ export default function BootLoader({ onComplete }) {
                  transition={{ duration: 1.2, ease: "circOut" }}
                />
             </div>
-            <div className="flex justify-between text-[10px] text-green-500 uppercase">
+            <div className="flex justify-between text-[10px] text-green-500 uppercase font-semibold">
                <span>Mem: 64TB</span>
                <span>Sys: OK</span>
             </div>
