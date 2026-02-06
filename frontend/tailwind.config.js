@@ -7,6 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
+        mongodb: {
+          green: '#00ED64',
+          dark: '#001E2B',
+          slate: '#3D4F58',
+          light: '#E8EDEB',
+          bg: '#F9FBFA',
+          white: '#FFFFFF',
+          hover: '#F1F5F4',
+        },
         primary: {
           DEFAULT: '#00ED64',
           50:  '#e4fde9',
