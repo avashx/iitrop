@@ -58,7 +58,7 @@ export default function Dashboard() {
 
       {/* Filter Toolbar Actions */}
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-         {['Sab Kuch', 'Bakar (Mails)', 'Bikau Maal', 'Homework'].map((filter, i) => (
+         {['Sab Kuch', 'Bakar (Mails)', 'Campus Dukan', 'Homework'].map((filter, i) => (
            <button 
              key={filter}
              className={`px-3 py-1.5 rounded-[20px] text-[12px] font-semibold border border-transparent transition-all hover:-translate-y-[1px] ${i===0 ? 'bg-[#001E2B] text-white shadow-md' : 'bg-white text-[#3D4F58] shadow-sm hover:shadow-md'}`}
@@ -72,7 +72,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
         {[
           { label: "Dean's Emails", value: stats.mails, icon: 'fa-envelope', color: 'text-blue-600', bg: 'bg-blue-50', new: 'Spam mostly' },
-          { label: "Bikau Maal", value: stats.items, icon: 'fa-store', color: 'text-green-600', bg: 'bg-green-50', new: 'Saste deals' },
+          { label: "Campus Dukan", value: stats.items, icon: 'fa-store', color: 'text-green-600', bg: 'bg-green-50', new: 'Saste deals' },
           { label: "Gedi Partners", value: stats.trips, icon: 'fa-car', color: 'text-purple-600', bg: 'bg-purple-50', new: 'Chalo Murthal' },
           { label: "Maut ka Farmaan", value: stats.assignments, icon: 'fa-book', color: 'text-yellow-600', bg: 'bg-yellow-50', new: 'Deadlines!' },
         ].map((s, idx) => (
