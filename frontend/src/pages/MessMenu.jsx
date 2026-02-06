@@ -1,97 +1,116 @@
-import { useEffect, useState } from 'react'
-import api from '../utils/api'
-import toast from 'react-hot-toast'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Star, Utensils, AlertTriangle, Info, ThumbsUp, ThumbsDown } from 'lucide-react'
 
-const MEAL_LABELS = { breakfast: '🌅 Breakfast', lunch: '☀️ Lunch', snacks: '🍵 Snacks', dinner: '🌙 Dinner' }
+const MOCK_MENU = {
+  today: [
+    { id: 1, meal: 'Breakfast', time: '7:30 - 9:30 AM', items: 'Aloo Paratha, Dahi, Pickle, Tea/Coffee', calories: '450 kcal', rating: 4.5, status: 'Live Now' },
+    { id: 2, meal: 'Lunch', time: '12:30 - 2:30 PM', items: 'Rajma Chawal, Jeera Aloo, Roti, Salad, Boondi Raita', calories: '750 kcal', rating: 4.2, status: 'Upcoming' },
+    { id: 3, meal: 'Snacks', time: '5:00 - 6:00 PM', items: 'Samosa, Green Chutney, Masala Chai', calories: '250 kcal', rating: 4.8, status: 'Upcoming' },
+    { id: 4, meal: 'Dinner', time: '7:30 - 9:30 PM', items: 'Patta Gobi (Again?), Dal Fry, Rice, Roti, Gulab Jamun', calories: '600 kcal', rating: 2.5, status: 'Upcoming' },
+  ]
+}
 
 export default function MessMenu() {
-  const [menus, setMenus] = useState([])
-  const [tab, setTab] = useState('today')
-  const [rating, setRating] = useState({})
+  const [activeTab, setActiveTab] = useState('Today')
+  const [votes, setVotes] = useState({})
 
-  useEffect(() => {
-    const endpoint = tab === 'today' ? '/mess/today' : '/mess/week'
-    api.get(endpoint).then((r) => setMenus(r.data)).catch(() => toast.error('Failed to load menu'))
-  }, [tab])
-
-  const submitRating = async (menuId) => {
-    const val = rating[menuId]
-    if (!val || val < 1 || val > 5) return toast.error('Rating must be 1-5')
-    try {
-      await api.post('/mess/rate', { menu_id: menuId, score: parseInt(val), comment: '' })
-      toast.success('Rating submitted!')
-    } catch (err) {
-      toast.error(err.response?.data?.detail || 'Could not rate')
-    }
+  const handleVote = (id, type) => {
+    setVotes(prev => ({ ...prev, [id]: type }))
   }
 
-  // group menus by date
-  const grouped = menus.reduce((acc, m) => {
-    const d = m.date
-    if (!acc[d]) acc[d] = []
-    acc[d].push(m)
-    return acc
-  }, {})
-
   return (
-    <div>
-      <h1 className="page-title">🍽️ Mess Menu</h1>
-
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6">
-        {['today', 'week'].map((t) => (
-          <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === t ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-            {t === 'today' ? "Today's Menu" : 'This Week'}
-          </button>
-        ))}
+    <motion.div 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }}
+      className="max-w-4xl mx-auto"
+    >
+      <div className="flex justify-between items-center mb-8">
+         <div>
+            <h1 className="text-2xl font-bold text-[var(--text-main)] flex items-center gap-2">
+              <span className="text-orange-500">Mess Menu</span>
+              <span className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 px-2 py-1 rounded-full uppercase tracking-wider">Satpura Hostel</span>
+            </h1>
+            <p className="text-[var(--text-secondary)] text-sm mt-1">Aaj kya bana hai? (Disappointment or Surprise?)</p>
+         </div>
       </div>
 
-      {Object.keys(grouped).length === 0 && (
-        <div className="card text-center py-12 text-gray-400">
-          <p className="text-lg">No menu data available yet.</p>
-          <p className="text-sm mt-1">Ask the mess committee to upload it!</p>
-        </div>
-      )}
+      <div className="grid gap-6">
+         {MOCK_MENU.today.map((meal, index) => (
+           <motion.div 
+             key={meal.id}
+             initial={{ y: 20, opacity: 0 }}
+             animate={{ y: 0, opacity: 1 }}
+             transition={{ delay: index * 0.1 }}
+             className="glass-panel p-6 rounded-2xl relative overflow-hidden"
+           >
+             {/* Status Badge */}
+             <div className={`absolute top-0 right-0 px-4 py-1.5 rounded-bl-xl text-xs font-bold uppercase tracking-wider ${
+               meal.status === 'Live Now' ? 'bg-[#00ED64] text-[#001E2B]' : 'bg-[var(--bg-hover)] text-[var(--text-secondary)]'
+             }`}>
+               {meal.status}
+             </div>
 
-      {Object.entries(grouped).map(([date, items]) => (
-        <div key={date} className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-            {new Date(date + 'T00:00').toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' })}
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            {items.map((m) => (
-              <div key={m.id} className="card">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-gray-800">{MEAL_LABELS[m.meal_type] || m.meal_type}</h4>
-                  {m.allergens && (
-                    <span className="badge badge-yellow text-xs">⚠️ {m.allergens}</span>
-                  )}
+             <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex-shrink-0">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl ${
+                     meal.rating > 4 ? 'bg-green-100 dark:bg-green-900/20' : 
+                     meal.rating < 3 ? 'bg-red-100 dark:bg-red-900/20' : 'bg-yellow-100 dark:bg-yellow-900/20'
+                  }`}>
+                     {meal.meal === 'Breakfast' && '☕️'}
+                     {meal.meal === 'Lunch' && '🍛'}
+                     {meal.meal === 'Snacks' && '🥟'}
+                     {meal.meal === 'Dinner' && '🍱'}
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 mb-2">{m.items}</p>
-                {m.nutritional_info && (
-                  <p className="text-xs text-gray-400 mb-3">{m.nutritional_info}</p>
-                )}
 
-                {/* Quick rating */}
-                <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
-                  <input
-                    type="number"
-                    min={1}
-                    max={5}
-                    placeholder="1-5"
-                    className="input-field w-20"
-                    value={rating[m.id] || ''}
-                    onChange={(e) => setRating({ ...rating, [m.id]: e.target.value })}
-                  />
-                  <button onClick={() => submitRating(m.id)} className="btn-primary text-xs">
-                    Rate
-                  </button>
+                <div className="flex-1">
+                   <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-bold text-[var(--text-main)]">{meal.meal}</h3>
+                      <span className="text-sm font-medium text-[var(--text-secondary)] bg-[var(--bg-hover)] px-2 py-0.5 rounded-lg flex items-center gap-1">
+                        <Utensils size={12} /> {meal.time}
+                      </span>
+                   </div>
+                   
+                   <p className="text-[var(--text-main)] text-sm font-medium leading-relaxed mb-3">
+                     {meal.items}
+                   </p>
+
+                   <div className="flex items-center gap-4 text-xs text-[var(--text-secondary)]">
+                      <span className="flex items-center gap-1">
+                        <Info size={12} /> {meal.calories}
+                      </span>
+                      <span className="flex items-center gap-1 text-yellow-500 font-bold">
+                        <Star size={12} fill="currentColor" /> {meal.rating}/5
+                      </span>
+                      {meal.rating < 3 && (
+                         <span className="flex items-center gap-1 text-red-500">
+                           <AlertTriangle size={12} /> High Risk Advisory
+                         </span>
+                      )}
+                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+
+                {/* Voting / Interactive Part */}
+                <div className="flex flex-row md:flex-col gap-2 items-center justify-center border-t md:border-t-0 md:border-l border-gray-100 dark:border-gray-800 pt-4 md:pt-0 md:pl-6">
+                   <button 
+                     onClick={() => handleVote(meal.id, 'up')}
+                     className={`p-2 rounded-lg transition-all ${votes[meal.id] === 'up' ? 'bg-green-100 text-green-600 dark:bg-green-900/40' : 'hover:bg-[var(--bg-hover)] text-[var(--text-secondary)]'}`}
+                   >
+                     <ThumbsUp size={20} />
+                   </button>
+                   <span className="text-xs font-bold text-[var(--text-secondary)]">Vote</span>
+                   <button 
+                     onClick={() => handleVote(meal.id, 'down')}
+                     className={`p-2 rounded-lg transition-all ${votes[meal.id] === 'down' ? 'bg-red-100 text-red-600 dark:bg-red-900/40' : 'hover:bg-[var(--bg-hover)] text-[var(--text-secondary)]'}`}
+                   >
+                     <ThumbsDown size={20} />
+                   </button>
+                </div>
+             </div>
+           </motion.div>
+         ))}
+      </div>
+    </motion.div>
   )
 }
