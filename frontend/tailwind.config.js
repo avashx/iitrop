@@ -8,32 +8,37 @@ export default {
     extend: {
       colors: {
         primary: {
-          50:  '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          DEFAULT: '#00ED64',
+          50:  '#e4fde9',
+          100: '#bcfacc',
+          200: '#94f7af',
+          300: '#6cf591',
+          400: '#44f274',
+          500: '#00ED64',
+          600: '#00c452',
+          700: '#009b41',
+          800: '#007330',
+          900: '#004a1f',
         },
-        accent: {
-          50:  '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
+        slate: {
+          850: '#1a2230',
+        },
+        surface: {
+          light: '#ffffff',
+          glass: 'rgba(255, 255, 255, 0.7)',
         },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+      },
+      boxShadow: {
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.1)',
+        'glass-hover': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+        'green-glow': '0 4px 12px rgba(0, 237, 100, 0.3)',
+      },
+      borderRadius: {
+        '4xl': '2rem', // for pills
       },
     },
   },
