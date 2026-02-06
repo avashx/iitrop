@@ -36,7 +36,7 @@ export default function Dashboard() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-           <h2 className="text-[14px] font-semibold text-[#b42a25] mb-1 uppercase tracking-[0.5px]">NSUTGod</h2>
+           <h2 className="text-[14px] font-semibold text-[#b42a25] mb-1 uppercase tracking-[0.5px]">NEXUS</h2>
            <h1 className="text-[28px] font-bold text-[#001E2B] tracking-tight">
              Kya haal h, <span className="text-[#00ED64]">Aditya</span>? 👋
            </h1>

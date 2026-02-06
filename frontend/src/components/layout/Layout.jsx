@@ -44,7 +44,7 @@ export default function Layout({ children }) {
              <span className="text-red-700 font-bold text-xl">N</span>
           </div>
           <div className={`ml-4 transition-opacity duration-300 ${sidebarHover ? 'opacity-100' : 'opacity-0'} whitespace-nowrap`}>
-            <h2 className="text-[20px] font-semibold text-[#b42a25] tracking-tight">NSUTGod</h2>
+            <h2 className="text-[20px] font-semibold text-[#b42a25] tracking-tight">NEXUS</h2>
           </div>
         </div>
 
@@ -89,7 +89,7 @@ export default function Layout({ children }) {
         {/* Mobile Header */}
         <header className="md:hidden sticky top-0 z-40 h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-4">
           <div className="flex items-center gap-3">
-            <span className="text-[#b42a25] font-bold text-lg">NSUTGod</span>
+            <span className="text-[#b42a25] font-bold text-lg">NEXUS</span>
           </div>
           <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
              <span className="text-xs font-bold text-gray-700">{user?.full_name?.[0]}</span>
