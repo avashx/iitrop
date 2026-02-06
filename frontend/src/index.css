@@ -27,16 +27,18 @@
 .dark {
   /* Inverted for dark mode */
   --mongodb-dark: #E8EDEB; /* In dark mode, "dark" text becomes light */
-  --mongodb-bg: #000d12;
-  --mongodb-white: #001E2B;
-  --mongodb-hover: #0d2c36;
+  --mongodb-bg: #0d1117;
+  --mongodb-white: #161b22;
+  --mongodb-light-gray: #30363d; /* Dark border color */
+  --mongodb-slate: #8b949e;
+  --mongodb-hover: #21262d;
   
-  --text-main: #E8EDEB;
-  --text-secondary: #94a3b8;
+  --text-main: #c9d1d9;
+  --text-secondary: #8b949e;
   
-  --bg-main: #000000;
-  --bg-surface: #001E2B;
-  --bg-hover: #0d2c36;
+  --bg-main: #0d1117;
+  --bg-surface: #161b22;
+  --bg-hover: #21262d;
 }
 
 /* ───── base reset ───── */
