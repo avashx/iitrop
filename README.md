@@ -1,8 +1,11 @@
 # NEXUS
 
+running link : https://iitrop.vercel.app/
+
 so basically we made this project for college students. it solves some daily problems we face in campus.
 
 what this project does:
+
 1. mess menu - checks what food is there today (so u know if u need to order from outside).
 2. cab share - helps find people to share cab with so it costs less money.
 3. marketplace - like clean olx for students to sell books and stuff.
@@ -16,6 +19,7 @@ backend is in python because python is easy to write.
 used vite to make it fast.
 
 how to run it:
+
 1. download this folder.
 2. open terminal and go to frontend folder.
 3. type npm install to get all packages.
