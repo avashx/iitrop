@@ -11,7 +11,32 @@
   --mongodb-bg: #F9FBFA;
   --mongodb-white: #FFFFFF;
   --mongodb-hover: #F1F5F4;
+  
+  /* Text colors */
+  --text-main: #001E2B;
+  --text-secondary: #3D4F58;
+  
+  /* Backgrounds */
+  --bg-main: #F9FBFA;
+  --bg-surface: #FFFFFF;
+  --bg-hover: #F1F5F4;
+
   --transition-speed: 0.2s;
+}
+
+.dark {
+  /* Inverted for dark mode */
+  --mongodb-dark: #E8EDEB; /* In dark mode, "dark" text becomes light */
+  --mongodb-bg: #000d12;
+  --mongodb-white: #001E2B;
+  --mongodb-hover: #0d2c36;
+  
+  --text-main: #E8EDEB;
+  --text-secondary: #94a3b8;
+  
+  --bg-main: #000000;
+  --bg-surface: #001E2B;
+  --bg-hover: #0d2c36;
 }
 
 /* ───── base reset ───── */
@@ -25,10 +50,11 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--mongodb-bg);
-  color: var(--mongodb-dark);
+  background-color: var(--bg-main);
+  color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ───── scrollbar ───── */
