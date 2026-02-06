@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
+import { TrendingUp, Calendar, Trophy, Users, ArrowRight, Activity, Zap } from 'lucide-react'
 
 const quickLinks = [
   { to: '/mess',        label: "Aaj ka Khana",     icon: 'fa-utensils',           color: 'text-orange-600', bg: 'bg-orange-50 dark:bg-orange-900/20' },
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const { user } = useAuth()
   const [stats, setStats] = useState({ mails: 4, items: 12, trips: 5, assignments: 3 })
   const [activeFilter, setActiveFilter] = useState('Sab Kuch')
+  const [pollVoted, setPollVoted] = useState(null)
   
   const container = {
     hidden: { opacity: 0 },
@@ -32,7 +34,7 @@ export default function Dashboard() {
 
   return (
     <motion.div 
-      className="min-h-screen"
+      className="min-h-screen pb-20"
       variants={container}
       initial="hidden"
       animate="show"
@@ -51,7 +53,7 @@ export default function Dashboard() {
         {/* Search Input */}
         <div className="relative w-full md:w-[320px]">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           </span>
           <input 
             type="text" 
@@ -101,7 +103,9 @@ export default function Dashboard() {
 
       {/* Quick Access Grid */}
       <motion.div variants={item}>
-        <h3 className="text-[18px] font-bold text-[var(--text-main)] mb-5 tracking-tight">Jugaad & Tools</h3>
+        <h3 className="text-[18px] font-bold text-[var(--text-main)] mb-5 tracking-tight flex items-center gap-2">
+           <Zap size={20} className="text-yellow-500" fill="currentColor" /> Jugaad & Tools
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {quickLinks.map((l) => (
             <Link 
@@ -120,12 +124,16 @@ export default function Dashboard() {
         </div>
       </motion.div>
       
-      {/* Table Placeholder (Mock Data) */}
+      {/* Recent Activity Table */}
       <motion.div variants={item} className="mt-10">
          <div className="card p-0 overflow-hidden bg-[var(--bg-surface)] rounded-xl shadow-sm border border-transparent dark:border-gray-800">
             <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-gray-900/20">
-               <h3 className="text-[14px] font-bold text-[var(--text-main)] uppercase tracking-wider">Taaza Khabar (Recent Activity)</h3>
-               <button className="text-[#00ED64] text-xs font-bold hover:underline">Sab Dekho</button>
+               <h3 className="text-[14px] font-bold text-[var(--text-main)] uppercase tracking-wider flex items-center gap-2">
+                  <Activity size={16} /> Taaza Khabar (Recent Activity)
+               </h3>
+               <button className="text-[#00ED64] text-xs font-bold hover:underline flex items-center gap-1">
+                  Sab Dekho <ArrowRight size={12} />
+               </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -138,14 +146,14 @@ export default function Dashboard() {
                 </thead>
                 <tbody>
                   {[
-                    { type: 'Academics', desc: 'Attendance short h bhai (CS101)', time: '10 min pehle', status: 'Danger', tagColor: 'tag-red' },
-                    { type: 'Mess', desc: 'Aaj Dessert me Gulab Jamun h! 😋', time: '1 hr pehle', status: 'Sorted', tagColor: 'tag-green' },
-                    { type: 'Alert', desc: 'Proxy lagwane ka koi scene?', time: '2 hrs pehle', status: 'Risk hai', tagColor: 'tag-yellow' },
-                    { type: 'Market', desc: 'Drafter bech rha koi?', time: 'Kal raat', status: 'Active', tagColor: 'tag-blue' },
+                    { type: 'Academics', desc: 'Attendance short h bhai (CS101)', time: '10 min pehle', status: 'Danger', tagColor: 'text-red-600 bg-red-50 dark:bg-red-900/20' },
+                    { type: 'Mess', desc: 'Aaj Dessert me Gulab Jamun h! 😋', time: '1 hr pehle', status: 'Sorted', tagColor: 'text-green-600 bg-green-50 dark:bg-green-900/20' },
+                    { type: 'Alert', desc: 'Proxy lagwane ka koi scene?', time: '2 hrs pehle', status: 'Risk hai', tagColor: 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20' },
+                    { type: 'Market', desc: 'Drafter bech rha koi?', time: 'Kal raat', status: 'Active', tagColor: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' },
                   ].map((row, i) => (
                     <tr key={i} className="hover:bg-[var(--bg-hover)] transition-colors border-b border-gray-50 dark:border-gray-800/50 last:border-none">
                       <td className="px-6 py-3">
-                        <span className={`tag ${row.tagColor}`}>{row.type}</span>
+                        <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${row.tagColor}`}>{row.type}</span>
                       </td>
                       <td className="px-6 py-3 text-[13px] font-medium text-[var(--text-secondary)]">
                         {row.desc}
@@ -164,6 +172,109 @@ export default function Dashboard() {
               </table>
             </div>
          </div>
+      </motion.div>
+
+      {/* NEW SECTION: Upcoming Events Timeline */}
+      <motion.div variants={item} className="mt-10">
+         <h3 className="text-[18px] font-bold text-[var(--text-main)] mb-6 tracking-tight flex items-center gap-2">
+            <Calendar size={20} className="text-purple-500" /> Upcoming Tamashe (Events)
+         </h3>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+               { day: "Today", date: "06 Feb", title: "DJ Night @ Open Air Theatre", time: "8:00 PM", tag: "Fun", color: "border-purple-500" },
+               { day: "Tomorrow", date: "07 Feb", title: "Inter-Hostel Cricket Match", time: "10:00 AM", tag: "Sports", color: "border-green-500" },
+               { day: "Saturday", date: "08 Feb", title: "Hackathon 2026 Submission", time: "11:59 PM", tag: "Tech", color: "border-red-500" },
+            ].map((event, i) => (
+               <div key={i} className={`card p-5 rounded-xl border-l-4 ${event.color} bg-[var(--bg-surface)] hover:translate-y-[-5px] transition-transform`}>
+                  <div className="flex justify-between items-start mb-2">
+                     <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{event.day}</span>
+                     <span className="text-xs font-bold bg-[var(--bg-hover)] px-2 py-1 rounded text-[var(--text-main)]">{event.date}</span>
+                  </div>
+                  <h4 className="text-lg font-bold text-[var(--text-main)] mb-1 leading-tight">{event.title}</h4>
+                  <p className="text-sm text-[var(--text-secondary)] flex items-center gap-2 mt-2">
+                     <Users size={14} /> 200+ Interested
+                  </p>
+               </div>
+            ))}
+         </div>
+      </motion.div>
+
+      {/* NEW SECTION: Two Column Widget Area */}
+      <motion.div variants={item} className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+         
+         {/* Hostel Leaderboard */}
+         <div className="card p-6 rounded-2xl bg-[var(--bg-surface)] border border-transparent dark:border-gray-800">
+            <div className="flex items-center justify-between mb-6">
+               <h3 className="font-bold text-[var(--text-main)] flex items-center gap-2">
+                  <Trophy size={18} className="text-yellow-500" /> Hostel Wars
+               </h3>
+               <span className="text-xs font-bold text-green-500 animate-pulse">Live Updates</span>
+            </div>
+            <div className="space-y-4">
+               {[
+                  { name: "Satpura", points: 1250, rank: 1, change: "up" },
+                  { name: "Udaygiri", points: 1120, rank: 2, change: "same" },
+                  { name: "Himadri", points: 980, rank: 3, change: "down" },
+                  { name: "Shivalik", points: 850, rank: 4, change: "down" },
+               ].map((h, i) => (
+                  <div key={h.name} className="flex items-center justify-between p-3 rounded-lg bg-[var(--bg-main)]">
+                     <div className="flex items-center gap-3">
+                        <span className={`w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${
+                           i === 0 ? 'bg-yellow-100 text-yellow-700' :
+                           i === 1 ? 'bg-gray-100 text-gray-700' :
+                           'bg-orange-50 text-orange-700'
+                        }`}>#{h.rank}</span>
+                        <span className="font-semibold text-[var(--text-main)]">{h.name}</span>
+                     </div>
+                     <span className="font-mono font-bold text-[var(--text-secondary)]">{h.points} pts</span>
+                  </div>
+               ))}
+            </div>
+         </div>
+
+         {/* Campus Poll */}
+         <div className="card p-6 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white relative overflow-hidden">
+            <div className="relative z-10">
+               <h3 className="font-bold text-xl mb-2 flex items-center gap-2">
+                  <TrendingUp size={20} /> Poll of the Week
+               </h3>
+               <p className="text-indigo-100 text-sm mb-6">Which canteen makes the best Maggi?</p>
+               
+               <div className="space-y-3">
+                  {[
+                     { id: 'a', label: "Nescafe (Night Canteen)", percent: 45 },
+                     { id: 'b', label: "LHC Canteen", percent: 30 },
+                     { id: 'c', label: "Hostel Shop", percent: 25 },
+                  ].map((opt) => (
+                     <button 
+                        key={opt.id}
+                        onClick={() => setPollVoted(opt.id)}
+                        className="w-full text-left"
+                     >
+                        <div className={`relative h-10 rounded-lg overflow-hidden transition-all ${pollVoted ? 'bg-black/20' : 'bg-white/10 hover:bg-white/20'}`}>
+                           <div 
+                             className="absolute top-0 left-0 h-full bg-white/30 transition-all duration-1000 ease-out"
+                             style={{ width: pollVoted ? `${opt.percent}%` : '0%' }}
+                           />
+                           <div className="absolute inset-0 flex items-center justify-between px-4">
+                              <span className="text-sm font-medium">{opt.label}</span>
+                              {pollVoted && <span className="text-xs font-bold">{opt.percent}%</span>}
+                           </div>
+                        </div>
+                     </button>
+                  ))}
+               </div>
+               
+               {pollVoted && (
+                  <p className="mt-4 text-xs text-indigo-200 text-center animate-fade-in">Thanks for voting! (Nescafe is winning obviously)</p>
+               )}
+            </div>
+            
+            {/* Background decoration */}
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-400/20 rounded-full blur-3xl"></div>
+         </div>
+
       </motion.div>
 
     </motion.div>
