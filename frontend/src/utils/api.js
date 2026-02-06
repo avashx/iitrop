@@ -20,10 +20,7 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       localStorage.removeItem('nexus_token')
-      // only redirect if not already on auth page
-      if (!window.location.pathname.startsWith('/auth')) {
-        window.location.href = '/auth/login'
-      }
+      // No redirect for demo mode
     }
     return Promise.reject(err)
   }
