@@ -3,52 +3,54 @@ import api from '../utils/api'
 
 const AuthContext = createContext(null)
 
+// Demo user that is always "logged in"
+const DEMO_USER = {
+  id: 1,
+  email: 'demo@iitrpr.ac.in',
+  username: 'demo',
+  full_name: 'Campus User',
+  role: 'student',
+  branch: 'CSE',
+  year: 2,
+  phone: '',
+  avatar_url: '',
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // on mount, check if token exists and fetch user
+  // auto-login: try to get a token silently, fall back to demo user object
   useEffect(() => {
-    const token = localStorage.getItem('nexus_token')
-    if (token) {
-      api
-        .get('/auth/me')
-        .then((res) => setUser(res.data))
-        .catch(() => {
-          localStorage.removeItem('nexus_token')
-        })
-        .finally(() => setLoading(false))
-    } else {
-      setLoading(false)
+    const bootstrap = async () => {
+      try {
+        // attempt to grab a real token so API calls that need auth work
+        const token = localStorage.getItem('nexus_token')
+        if (token) {
+          const me = await api.get('/auth/me')
+          setUser(me.data)
+        } else {
+          // auto-login with a demo account
+          const formData = new URLSearchParams()
+          formData.append('username', 'demo@iitrpr.ac.in')
+          formData.append('password', 'demo1234')
+          const res = await api.post('/auth/login', formData, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          })
+          localStorage.setItem('nexus_token', res.data.access_token)
+          setUser(res.data.user)
+        }
+      } catch {
+        // backend unreachable — use offline demo user so the UI still renders
+        setUser(DEMO_USER)
+      } finally {
+        setLoading(false)
+      }
     }
+    bootstrap()
   }, [])
 
-  const login = async (email, password) => {
-    // OAuth2PasswordRequestForm expects form data with "username" field
-    const formData = new URLSearchParams()
-    formData.append('username', email)
-    formData.append('password', password)
-
-    const res = await api.post('/auth/login', formData, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    })
-
-    localStorage.setItem('nexus_token', res.data.access_token)
-    const me = await api.get('/auth/me')
-    setUser(me.data)
-    return me.data
-  }
-
-  const register = async (payload) => {
-    await api.post('/auth/register', payload)
-  }
-
-  const logout = () => {
-    localStorage.removeItem('nexus_token')
-    setUser(null)
-  }
-
-  const value = { user, loading, login, register, logout }
+  const value = { user, loading }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

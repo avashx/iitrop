@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import {
   HiOutlineHome,
@@ -10,7 +10,6 @@ import {
   HiOutlineMap,
   HiOutlineAcademicCap,
   HiOutlineChatAlt2,
-  HiOutlineLogout,
   HiOutlineMenu,
   HiOutlineX,
 } from 'react-icons/hi'
@@ -29,14 +28,8 @@ const links = [
 ]
 
 export default function Layout({ children }) {
-  const { user, logout } = useAuth()
-  const navigate = useNavigate()
+  const { user } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
-  const handleLogout = () => {
-    logout()
-    navigate('/auth/login')
-  }
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
@@ -80,9 +73,9 @@ export default function Layout({ children }) {
             ))}
           </nav>
 
-          {/* User footer */}
+          {/* User info */}
           <div className="border-t border-gray-100 p-4">
-            <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center">
                 <span className="text-primary-700 font-semibold text-sm">
                   {user?.full_name?.[0] || 'U'}
@@ -90,15 +83,11 @@ export default function Layout({ children }) {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-gray-800 truncate">
-                  {user?.full_name || 'User'}
+                  {user?.full_name || 'Campus User'}
                 </p>
-                <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+                <p className="text-xs text-gray-400 truncate">IIT Ropar</p>
               </div>
             </div>
-            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-600 transition-colors w-full">
-              <HiOutlineLogout className="w-4 h-4" />
-              Sign out
-            </button>
           </div>
         </div>
       </aside>
